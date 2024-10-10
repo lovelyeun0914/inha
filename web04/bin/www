@@ -4,8 +4,8 @@
  * Module dependencies.
  */
 
-var app = require('../../app');
-var debug = require('debug')('web02:server');
+var app = require('../app');
+var debug = require('debug')('web04:server');
 var http = require('http');
 
 /**
