@@ -14,8 +14,9 @@ router.get("/book/info",function (req,res){
   const authors = req.query.authors;
   const publisher = req.query.publisher;
   const isbn = req.query.isbn;
+  const contents = req.query.contents;
 
-  const info = {title,thumbnail,price,authors,publisher,isbn};
+  const info = {title,thumbnail,price,authors,publisher,isbn,contents};
 
   res.render('index',{title:"도서정보",pageName:'kakao/info.ejs',info})
 })
