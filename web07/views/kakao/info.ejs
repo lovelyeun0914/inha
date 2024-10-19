@@ -1,0 +1,58 @@
+<div class="my-5 row justify-content-center">
+    <h1 class="text-center mb-5"><%= title %></h1>
+    <div class="card col-md-10">
+        <div class="row card-body p-3">
+            <div class="col-lg-4 mb-3 text-center">
+                <img src=<%= info.thumbnail %> width="80%">
+            </div>
+            <div class="col align-self-center">
+                <h5><%= info.title %></h5>
+                <hr>
+                <div class="mb-3">ISBN: <%= info.isbn %></div>
+                <div class="mb-3">가격: <%= info.price %>원</div>
+                <div class="mb-3">저자: <%= info.authors %></div>
+                <div class="mb-3">출판사: <%= info.publisher %>원</div>
+                <div class="my-3">
+                    <button class="btn btn-success px-5 cart">장바구니</button>
+                    <button class="btn btn-warning px-5">바로구매</button>
+                </div>
+            </div>
+            <hr>
+            <div><%= info.contents %></div>
+        </div>
+    </div>
+</div>
+<!--시험-->
+<script type="module">
+
+    import {app} from '/javascripts/config.js';
+    import {getDatabase, ref, set, get} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+    const db = getDatabase(app);
+
+    const isbn = "<%=info.isbn%>";
+    const title = "<%=info.title%>";
+    const price = "<%=info.price%>";
+    const authors = "<%=info.authors%>";
+    const publisher = "<%=info.publisher%>";
+    const contents = "<%=info.contents%>";
+    const thumbnail = "<%=info.thumbnail%>";
+
+    const info = {isbn,title,price,authors,publisher,contents,thumbnail}
+    //장바구니를 클릭한 경우
+    $(".cart").on("click", async function () {
+        if (email) {
+            //현재도서를 장바구니에 넣기
+            const ref_cart = ref(db,`cart/${uid}/${isbn}`);
+            const snapshot = await get(ref_cart);
+            if (snapshot.val()){
+                alert("이미 장바구니에 있습니다");
+            }else{
+                await set(ref_cart, info);
+                alert("장바구니에 추가되었습니다🤩");
+            }
+        } else {
+            sessionStorage.setItem("target", window.location.href);
+            location.href = "/users/login";
+        }
+    });
+</script>
