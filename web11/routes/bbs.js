@@ -1,0 +1,13 @@
+var express = require('express');
+var router = express.Router();
+
+/* GET home page. */
+router.get('/', function(req, res, next) {
+  res.render('index', { title: '게시판', pageName:'bbs/list.ejs' });
+});
+
+router.get('/insert', function(req, res, next) {
+  res.render('index', { title: '글쓰기', pageName:'bbs/insert.ejs' });
+});
+
+module.exports = router;
