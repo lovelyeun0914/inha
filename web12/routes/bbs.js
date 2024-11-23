@@ -13,7 +13,13 @@ router.get('/insert', function(req, res, next) {
 router.get('/:id', function(req, res, next) {
   const id = req.params.id;
   console.log('id.....',id);
-  res.render('index', { title: '게시글정보', pageName:'bbs/read.ejs' });
+  res.render('index', { title: '게시글정보', pageName:'bbs/read.ejs', id });
+});
+
+router.get('/update/:id', function(req, res, next) {
+  const id = req.params.id;
+  console.log('id.....',id);
+  res.render('index', { title: '게시글수정', pageName:'bbs/update.ejs', id });
 });
 
 module.exports = router;
