@@ -1,0 +1,37 @@
+<div class="my-5 row justify-content-center">
+    <h1 class="text-center mb-5"><%=title%></h1>
+    <form name="frm" class="col-md-8">
+        <input name="title" class="form-control mb-2" placeholder="제목을 입력하세요">
+        <textarea name="contents" class="form-control" rows="10" placeholder="내용을입력하세요"></textarea>
+        <div class="text-center mt-3">
+            <button class="btn btn-primary px-5">등록</button>
+            <button type="reset" class="btn btn-secondary px-5">취소</button>
+        </div>
+    </form>
+</div>
+<script type="module">
+    import {app} from '/javascripts/config.js'
+    //파이어베이스에 있는 사용법 복사 붙여넣기 함 cdn 주소를 적어주었다.
+    import {getFirestore,doc,getDoc,setDoc} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    const db = getFirestore(app);
+
+    const id = "<%= id %>"
+    console.log('id', id);
+    const snapshot = await getDoc(doc(db,`bbs/${id}`));
+    if (snapshot.exists()){
+        const bbs =  snapshot.data();
+        $(frm.title).val(bbs.title);
+        $(frm.contents).val(bbs.contents);
+    }
+
+    $(frm).on("submit",async function (e){
+        e.preventDefault();
+        if (confirm("수정된 내용을 저장하실래요?")){
+            const title = $(frm.title).val();
+            const contents = $(frm.contents).val();
+
+            await setDoc(doc(db,`bbs/${id}`),{...snapshot.data(),title,contents})
+            location.href = `/bbs/${id}`;
+        }
+    })
+</script>

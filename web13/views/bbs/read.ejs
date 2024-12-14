@@ -1,0 +1,51 @@
+<div class="my-5 row justify-content-center">
+    <h1 class="text-center"><%= title %></h1>
+    <div class="col-10">
+        <div class="text-end mb-2 buttons" >
+            <button id="update" class="btn btn-success btn-sm">수정</button>
+            <button id="delete" class="btn btn-danger btn-sm">삭제</button>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 id = "title">여기에 제목 출력</h5>
+                <hr>
+                <div id="contents" style="white-space: pre-wrap">여기에 내용 출력</div>
+            </div>
+            <div class="card-footer">
+                Posted By <span id="email">이메일</span> on <span id="date">2024년 11월 23일</span>
+            </div>
+        </div>
+        <%-include("reply.ejs")%>
+    </div>
+</div>
+<script type="module">
+    import {app} from '/javascripts/config.js'
+    //파이어베이스에 있는 사용법 복사 붙여넣기 함 cdn 주소를 적어주었다.
+    import {
+        getFirestore, doc, getDoc,deleteDoc
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+    const db = getFirestore(app);
+    const id = "<%= id %>"
+    const snapshot = await getDoc(doc(db,`bbs/${id}`));
+    if (snapshot.exists()){
+        const bbs =  snapshot.data();
+        $("#title").html(bbs.title);
+        $("#contents").html(bbs.contents);
+        $("#email").html(bbs.email);
+        $("#date").html(bbs.date);
+        if (email == bbs.email) $(".buttons").show();
+    }
+    $("#delete").on("click",async function () {
+        if (confirm("게시글을 삭제하시겠습니까?")){
+            //게시글삭제
+            await deleteDoc(doc(db,`bbs/${id}`))
+            location.href="/bbs"
+        }
+    })
+
+    $("#update").on("click",async function () {
+        location.href ="/bbs/update/"+id;
+    })
+
+</script>
